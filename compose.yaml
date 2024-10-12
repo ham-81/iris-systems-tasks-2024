@@ -1,0 +1,28 @@
+
+services:
+  app:
+    build: .
+    command: bundle exec rails s -b '0.0.0.0'
+    volumes:
+      - .:/container
+    ports:
+      - "8080:3000"
+    depends_on:
+      - db
+    links:
+      - db
+    environment:
+      DB_USER: root
+      DB_NAME: rails-db
+      DB_PASSWORD: password
+      DB_HOST: localhost
+  db:
+    image: mysql2
+    restart: always
+    environment:
+        MYSQL_ROOT_PASSWORD: password
+        MYSQL_DATABASE: rails-db
+        MYSQL_USER: user
+        MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
